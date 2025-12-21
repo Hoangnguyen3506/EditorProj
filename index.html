@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>CKEditor Submit</title>
+
+  <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    #preview {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 20px;
+      min-height: 100px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Soạn nội dung</h2>
+
+<textarea id="editor"></textarea>
+
+<br>
+<button onclick="submitContent()">Submit</button>
+
+<h3>Kết quả hiển thị</h3>
+<div id="preview"></div>
+
+<script>
+  CKEDITOR.replace('editor', {
+    height: 300,
+    extraPlugins: 'image2,uploadimage,embed,autoembed',
+    filebrowserUploadMethod: 'base64'
+  });
+
+  function submitContent() {
+    const data = CKEDITOR.instances.editor.getData();
+    document.getElementById('preview').innerHTML = data;
+  }
+</script>
+
+</body>
+</html>
