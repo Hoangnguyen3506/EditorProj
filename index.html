@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>CKEditor Submit</title>
+  <title>CKEditor chạy ổn</title>
 
   <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
 
@@ -23,6 +23,22 @@
       margin-top: 10px;
       padding: 8px 16px;
     }
+
+    /* 🔥 RESIZE VIDEO (CHỈ Ở PREVIEW) */
+    .video-resize {
+      display: inline-block;
+      resize: both;
+      overflow: hidden;
+      width: 400px;
+      height: 225px;
+      border: 1px dashed #aaa;
+    }
+
+    .video-resize iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -38,16 +54,25 @@
 <div id="preview"></div>
 
 <script>
-  CKEDITOR.replace('editor', {
-    height: 300,
-    extraPlugins: 'image2,uploadimage,embed,autoembed',
-    filebrowserUploadMethod: 'base64'
-  });
+/* INIT CKEDITOR */
+CKEDITOR.replace('editor', {
+  height: 300,
+  extraPlugins: 'image2,embed,autoembed',
+  embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
+});
 
-  function submitContent() {
-    const data = CKEDITOR.instances.editor.getData();
-    document.getElementById('preview').innerHTML = data;
-  }
+/* SUBMIT + WRAP VIDEO ĐỂ RESIZE */
+function submitContent() {
+  let data = CKEDITOR.instances.editor.getData();
+
+  // wrap video embed để resize
+  data = data.replace(
+    /(<div[^>]*data-oembed-url[^>]*>[\s\S]*?<\/div>)/g,
+    '<div class="video-resize">$1</div>'
+  );
+
+  document.getElementById('preview').innerHTML = data;
+}
 </script>
 
 </body>
